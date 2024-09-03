@@ -1,0 +1,65 @@
+drop database if exists Livraria;
+create database Livraria;
+use Livraria;
+
+create table if not exists Clientes(
+	ID_cliente int(8) primary key auto_increment,
+    CPF varchar(11) not null unique,
+    Nome varchar(255) not null,
+    Sexo varchar(255) not null,
+    Idade varchar(3) not null,
+    Endereco varchar(255) not null,
+    Email varchar(255) not null,
+    Telefone varchar(12) not null,
+    DataCadastro date
+);
+
+create table if not exists Livros(
+	ID_livro int(3) primary key auto_increment,
+	Nome_livro varchar(50) not null,
+    Genero varchar(50) not null,
+    Autor varchar(50) not null,
+    Classificacao varchar(50) not null
+);
+
+create table if not exists Estoque(
+	ID_estoque int(3) primary key auto_increment,
+    ID_livro int,
+    Quantidade int not null,
+    
+	constraint fk_ID_livro foreign key (ID_livro) references Livros(ID_livro)
+);
+
+create table if not exists Cargo(
+	ID_cargo int primary key auto_increment,
+    NomeCargo varchar(20) not null,
+    Turno varchar(20) not null
+);
+
+create table if not exists Funcionarios(
+	ID_funcionario int(5) primary key auto_increment,
+    ID_cargo int,
+    CPF_funiconario varchar(11) not null,
+    Nome_funcionario varchar(255) not null,
+    Sexo_funiconario varchar(255) not null,
+    Idade_funiconario varchar(3) not null,
+    Cargo varchar(255) not null,
+    Data_contratacao date,
+    Salario int not null,
+	
+    constraint fk_ID_cargo foreign key (ID_cargo) references Cargo(ID_cargo)
+
+);
+
+create table if not exists Pedidos(
+	ID_pedido int(3) primary key auto_increment,
+    Id_cliente int,
+    Id_livro int,
+    ID_funcionario int,
+    Valor int not null,
+    Quantidade int not null,
+    
+    constraint fk_ID_cliente foreign key (ID_cliente) references Clientes(ID_cliente),
+	constraint fk_ID_livros foreign key (ID_livro) references Livros(ID_livro),
+    constraint fk_ID_funcionario foreign key (ID_funcionario) references Funcionarios(ID_funcionario)
+);
